@@ -354,7 +354,7 @@ fn remove_collider_on<E: Event, B: Bundle>(
     mut event_writer: EventWriter<CollisionEnded>,
     mut commands: Commands,
 ) {
-    let entity = trigger.target();
+    let entity = trigger.target().unwrap();
 
     // Remove the collider from the contact graph.
     contact_graph.remove_collider_with(entity, |contact_pair| {

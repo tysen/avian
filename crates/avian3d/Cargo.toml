@@ -86,7 +86,7 @@ libm = { version = "0.2", optional = true }
 approx = "0.5"
 parry3d = { version = "0.17", optional = true }
 parry3d-f64 = { version = "0.17", optional = true }
-nalgebra = { version = "0.33", features = ["convert-glam029"], optional = true }
+nalgebra = { version = "0.33", features = ["convert-glam030"], optional = true }
 serde = { version = "1", features = ["derive"], optional = true }
 derive_more = "1"
 itertools = "0.13"

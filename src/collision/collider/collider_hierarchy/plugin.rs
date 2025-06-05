@@ -18,7 +18,7 @@ impl Plugin for ColliderHierarchyPlugin {
              query: Query<(), With<ColliderMarker>>,
              rb_query: Query<Entity, With<RigidBody>>,
              parent_query: Query<&ChildOf>| {
-                let entity = trigger.target();
+                let entity = trigger.target().unwrap();
 
                 // Make sure the entity is a collider.
                 if !query.contains(entity) {
@@ -29,7 +29,7 @@ impl Plugin for ColliderHierarchyPlugin {
                 if let Some(body) = rb_query.get(entity).ok().map_or_else(
                     || {
                         parent_query
-                            .iter_ancestors(trigger.target())
+                            .iter_ancestors(trigger.target().unwrap())
                             .find(|&entity| rb_query.contains(entity))
                     },
                     Some,
@@ -44,7 +44,7 @@ impl Plugin for ColliderHierarchyPlugin {
             |trigger: Trigger<OnRemove, (RigidBody, ColliderMarker)>,
              mut commands: Commands,
              query: Query<(), With<ColliderMarker>>| {
-                let entity = trigger.target();
+                let entity = trigger.target().unwrap();
 
                 // Make sure the collider is on the same entity as the rigid body.
                 if query.contains(entity) {
@@ -75,7 +75,7 @@ fn on_collider_body_changed(
     body_query: Query<Entity, With<RigidBody>>,
     collider_query: Query<(), With<ColliderMarker>>,
 ) {
-    let entity = trigger.target();
+    let entity = trigger.target().unwrap();
 
     // Skip if the entity is not a collider or an ancestor of a collider.
     let Ok(is_collider) = query.get(entity) else {
@@ -86,7 +86,7 @@ fn on_collider_body_changed(
     let Some(body) = body_query.get(entity).ok().map_or_else(
         || {
             parent_query
-                .iter_ancestors(trigger.target())
+                .iter_ancestors(trigger.target().unwrap())
                 .find(|&entity| body_query.contains(entity))
         },
         Some,
@@ -124,7 +124,7 @@ fn on_body_removed(
     // TODO: Here we assume that rigid bodies are not nested, so `ColliderOf` is simply removed
     //       instead of being updated to point to a new rigid body in the hierarchy.
 
-    let body = trigger.target();
+    let body = trigger.target().unwrap();
 
     // Remove `ColliderOf` from all colliders attached to the rigid body.
     if let Ok(colliders) = body_collider_query.get(body) {

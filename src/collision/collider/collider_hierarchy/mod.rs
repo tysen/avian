@@ -8,7 +8,7 @@ pub use plugin::ColliderHierarchyPlugin;
 use crate::prelude::*;
 use bevy::{
     ecs::{
-        component::HookContext,
+        lifecycle::HookContext,
         relationship::{Relationship, RelationshipHookMode, RelationshipSourceCollection},
         world::DeferredWorld,
     },

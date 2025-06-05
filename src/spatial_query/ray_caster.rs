@@ -1,7 +1,7 @@
 use crate::prelude::*;
 use bevy::{
     ecs::{
-        component::HookContext,
+        lifecycle::HookContext,
         entity::{EntityMapper, MapEntities},
         world::DeferredWorld,
     },

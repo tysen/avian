@@ -16,7 +16,7 @@ use bevy::{
     ecs::intern::Interned,
     ecs::schedule::{ExecutorKind, LogLevel, ScheduleBuildSettings, ScheduleLabel},
     prelude::*,
-    transform::TransformSystem,
+    prelude::TransformSystems
 };
 
 /// Sets up the default scheduling, system set configuration, and time resources for physics.
@@ -71,7 +71,7 @@ impl Plugin for PhysicsSchedulePlugin {
                 PhysicsSet::Sync,
             )
                 .chain()
-                .before(TransformSystem::TransformPropagate),
+                .before(TransformSystems::Propagate),
         );
 
         // Set up the physics schedule, the schedule that advances the physics simulation

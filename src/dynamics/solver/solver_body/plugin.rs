@@ -39,7 +39,7 @@ impl Plugin for SolverBodyPlugin {
             |trigger: Trigger<OnAdd, RigidBody>,
              rb_query: Query<&RigidBody, RigidBodyActiveFilter>,
              commands: Commands| {
-                add_solver_body(In(trigger.target()), rb_query, commands);
+                add_solver_body(In(trigger.target().unwrap()), rb_query, commands);
             },
         );
 
@@ -49,7 +49,7 @@ impl Plugin for SolverBodyPlugin {
             |trigger: Trigger<OnRemove, RigidBodyDisabled>,
              rb_query: Query<&RigidBody, Without<Sleeping>>,
              commands: Commands| {
-                add_solver_body::<Without<Sleeping>>(In(trigger.target()), rb_query, commands);
+                add_solver_body::<Without<Sleeping>>(In(trigger.target().unwrap()), rb_query, commands);
             },
         );
         app.add_observer(
@@ -69,7 +69,7 @@ impl Plugin for SolverBodyPlugin {
                     With<Disabled>,
                     Without<RigidBodyDisabled>,
                     Without<Sleeping>,
-                )>(In(trigger.target()), rb_query, commands);
+                )>(In(trigger.target().unwrap()), rb_query, commands);
             },
         );
         app.add_observer(
@@ -77,7 +77,7 @@ impl Plugin for SolverBodyPlugin {
              rb_query: Query<&RigidBody, Without<RigidBodyDisabled>>,
              commands: Commands| {
                 add_solver_body::<Without<RigidBodyDisabled>>(
-                    In(trigger.target()),
+                    In(trigger.target().unwrap()),
                     rb_query,
                     commands,
                 );
@@ -87,7 +87,7 @@ impl Plugin for SolverBodyPlugin {
         // Remove solver bodies when their associated rigid body is removed.
         app.add_observer(
             |trigger: Trigger<OnRemove, RigidBody>, deferred_world: DeferredWorld| {
-                remove_solver_body(In(trigger.target()), deferred_world);
+                remove_solver_body(In(trigger.target().unwrap()), deferred_world);
             },
         );
 
@@ -95,7 +95,7 @@ impl Plugin for SolverBodyPlugin {
         app.add_observer(
             |trigger: Trigger<OnAdd, (Disabled, RigidBodyDisabled, Sleeping)>,
              deferred_world: DeferredWorld| {
-                remove_solver_body(In(trigger.target()), deferred_world);
+                remove_solver_body(In(trigger.target().unwrap()), deferred_world);
             },
         );
 

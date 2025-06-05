@@ -211,7 +211,7 @@ impl<C: ScalableCollider> Plugin for ColliderBackendPlugin<C> {
              mut commands: Commands,
              query: Query<(&ColliderMassProperties, &ColliderOf)>| {
                 if let Ok((collider_mass_properties, &ColliderOf { body })) =
-                    query.get(trigger.target())
+                    query.get(trigger.target().unwrap())
                 {
                     // If the collider mass properties are zero, there is nothing to subtract.
                     if *collider_mass_properties == ColliderMassProperties::ZERO {
@@ -235,7 +235,7 @@ impl<C: ScalableCollider> Plugin for ColliderBackendPlugin<C> {
                 &mut ColliderMassProperties,
             )>| {
                 if let Ok((collider, density, mut collider_mass_properties)) =
-                    collider_query.get_mut(trigger.target())
+                    collider_query.get_mut(trigger.target().unwrap())
                 {
                     // Update collider mass props.
                     *collider_mass_properties =

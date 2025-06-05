@@ -27,7 +27,7 @@ impl<C: Component> Plugin for AncestorMarkerPlugin<C> {
              collider_query: Query<&C>,
              parent_query: Query<&ChildOf>,
              ancestor_query: Query<(), With<AncestorMarker<C>>>| {
-                let entity = trigger.target();
+                let entity = trigger.target().unwrap();
                 if collider_query.contains(entity) {
                     add_ancestor_markers(
                         entity,
@@ -53,7 +53,7 @@ impl<C: Component> Plugin for AncestorMarkerPlugin<C> {
                 (Entity, Has<C>),
                 Or<(With<AncestorMarker<C>>, With<C>)>
             >| {
-                let entity = trigger.target();
+                let entity = trigger.target().unwrap();
                 if collider_query.contains(entity) {
                     remove_ancestor_markers(entity, &mut commands, &parent_query, &child_query, &ancestor_query, false);
                 }
