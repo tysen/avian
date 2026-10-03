@@ -785,12 +785,15 @@ pub fn joint_damping<T: Component + EntityConstraint<2>>(
         let delta_omega = (body2.angular_velocity - body1.angular_velocity)
             * (damping.angular * delta_secs).min(1.0);
 
-        if !body1.flags.is_kinematic() {
-            body1.angular_velocity += delta_omega;
-        }
-        if !body2.flags.is_kinematic() {
-            body2.angular_velocity -= delta_omega;
-        }
+        let i1 = inertia1.effective_inv_angular_inertia();
+        let i2 = inertia2.effective_inv_angular_inertia();
+
+        #[cfg(feature = "2d")]
+        let angular_impulse = (i1 + i2).recip_or_zero() * delta_omega;
+        #[cfg(feature = "3d")]
+        let angular_impulse = (i1 + i2).inverse_or_zero() * delta_omega;
+        body1.angular_velocity += i1 * angular_impulse;
+        body2.angular_velocity -= i2 * angular_impulse;
 
         let delta_v = (body2.linear_velocity - body1.linear_velocity)
             * (damping.linear * delta_secs).min(1.0);
