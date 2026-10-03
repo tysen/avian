@@ -17,7 +17,7 @@ pub trait AngularConstraint {
         inv_angular_inertia2: SymmetricTensor,
         delta_lagrange: Scalar,
     ) -> Scalar {
-        if delta_lagrange.abs() <= Scalar::EPSILON {
+        if delta_lagrange == 0.0 {
             return 0.0;
         }
 
@@ -67,7 +67,7 @@ pub trait AngularConstraint {
         delta_lagrange: Scalar,
         axis: Vector,
     ) -> Vector {
-        if delta_lagrange.abs() <= Scalar::EPSILON {
+        if delta_lagrange == 0.0 {
             return Vector::ZERO;
         }
 
@@ -204,7 +204,7 @@ pub trait AngularConstraint {
         delta_lagrange: Scalar,
         axis: Vector3,
     ) -> Scalar {
-        if delta_lagrange.abs() <= Scalar::EPSILON {
+        if delta_lagrange == 0.0 {
             return 0.0;
         }
 
@@ -235,7 +235,7 @@ pub trait AngularConstraint {
         delta_lagrange: Scalar,
         axis: Vector,
     ) -> Vector {
-        if delta_lagrange.abs() <= Scalar::EPSILON {
+        if delta_lagrange == 0.0 {
             return Vector::ZERO;
         }
 
